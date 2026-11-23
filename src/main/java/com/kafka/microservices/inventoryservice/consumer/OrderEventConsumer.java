@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderEventConsumer {
+
     private static final Logger log = LoggerFactory.getLogger(OrderEventConsumer.class);
 
     @KafkaListener(topics = "order-created", groupId = "inventory-service-group")
