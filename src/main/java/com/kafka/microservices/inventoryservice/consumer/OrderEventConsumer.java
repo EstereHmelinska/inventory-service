@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderEventConsumer {
+
     private static final Logger log = LoggerFactory.getLogger(OrderEventConsumer.class);
     private final InventoryService inventoryService;
 

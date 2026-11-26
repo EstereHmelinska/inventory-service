@@ -21,6 +21,14 @@ class OrderEventConsumerTest {
     @Mock
     private InventoryService inventoryService;
 
+    private static final Long phoneCustomerId = 17L;
+    private static final String phoneProduct = "Phone";
+    private static final int phoneQuantity = 1;
+
+    private static final Long headphonesCustomerId = 18L;
+    private static final String headphonesProduct = "Headphones";
+    private static final int headphonesQuantity = 2;
+
     private OrderEventConsumer orderEventConsumer;
 
     @BeforeEach
@@ -29,13 +37,13 @@ class OrderEventConsumerTest {
     }
 
     @Test
-    void shouldLogOrderDetails(CapturedOutput output) {
+    void consumeOrderCreatedEvent_shouldLogOrderDetails(CapturedOutput output) {
         //Arrange
         OrderCreatedEvent event = new OrderCreatedEvent(
                 UUID.randomUUID(),
-                17L,
-                "Phone",
-                1,
+                phoneCustomerId,
+                phoneProduct,
+                phoneQuantity,
                 LocalDateTime.now()
         );
 
@@ -47,19 +55,19 @@ class OrderEventConsumerTest {
         //Assert
         assertTrue(output.getOut().contains("Processing order:"));
         assertTrue(output.getOut().contains(event.orderId().toString()));
-        assertTrue(output.getOut().contains("Product: Phone"));
-        assertTrue(output.getOut().contains("Quantity: 1"));
+        assertTrue(output.getOut().contains("Product: " + phoneProduct));
+        assertTrue(output.getOut().contains("Quantity: " + phoneQuantity));
     }
 
     @Test
     //confirms if the consumer isn't accidentally logging fixed values
-    void shouldHandleDifferentOrderDetails(CapturedOutput output) {
+    void consumeOrderCreatedEvent_shouldHandleDifferentOrderDetails(CapturedOutput output) {
         //Arrange
         OrderCreatedEvent event = new OrderCreatedEvent(
                 UUID.randomUUID(),
-                18L,
-                "Headphones",
-                2,
+                headphonesCustomerId,
+                headphonesProduct,
+                headphonesQuantity,
                 LocalDateTime.now()
         );
 
@@ -69,7 +77,7 @@ class OrderEventConsumerTest {
         //Assert
         assertTrue(output.getOut().contains("Processing order:"));
         assertTrue(output.getOut().contains(event.orderId().toString()));
-        assertTrue(output.getOut().contains("Product: Headphones"));
-        assertTrue(output.getOut().contains("Quantity: 2"));
+        assertTrue(output.getOut().contains("Product: " + headphonesProduct));
+        assertTrue(output.getOut().contains("Quantity: " + headphonesQuantity));
     }
 }
